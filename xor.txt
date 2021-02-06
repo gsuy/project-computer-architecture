@@ -1,0 +1,4 @@
+       nand 1 2 3
+       nand 1 3 4
+       nand 5 2 5
+       nand 4 5 3

@@ -1,0 +1,21 @@
+       lw 0 2 mcand     load mcand 
+       lw 0 3 mplier    load mplier
+       lw 0 4 one       load 4 with 1
+       lw 0 6 neg1      load 6 with -1
+       lw 0 7 loop      load 7 with amount of mutiplication cycle 
+mul    nand 3 4 5       check ตัวคูณแต่ละbit ว่า เท่ากับ 0 หรือไม่
+       nand 5 5 5       โดยการ sll ที่ $4 แล้วนำมา AND ผ่านการ NAND 2 รอบ เก็บไว้ที่ $5
+       beq 5 0 1        ถ้า $5 == 0 แล้ว จะกระโดดข้ามไป 1 คำสั่ง
+       add 1 2 1        ถ้า $5 != 0 แล้ว จะนำค่า mcand บวกเพิ่มเข้าไปใน $1
+       add 2 2 2        sll mcand ไป 1 bit
+       add 4 4 4        sll ตัวเช็คค่าว่าแต่ละบิตมีค่ารึเปล่า ไป 1 bit
+       add 7 6 7        ลดค่าตัวloop ลงที่ละ 1
+       beq 7 0 done     ถ้า ตัวloop มีค่าเท่ากับ 0 ให้จบการทำงาน
+       beq 0 0 mul      กระโดดกลับไปทำคูณใหม่
+       noop
+done   halt
+loop   .fill 15
+neg1   .fill -1
+one    .fill 1
+mcand  .fill 32700
+mplier  .fill 32700

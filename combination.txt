@@ -1,0 +1,38 @@
+       lw 0 1 nin
+       lw 0 2 rin
+       lw 0 6 comAdr
+       jalr 6 7
+       halt
+combi  beq 0 2 23 // r==0 ? goto done
+       lw 0 4 pos1 // load 1
+       beq 1 2 21 // n==r ? goto done
+       sw 5 7 stack // save value reg[7] to mem
+       add 5 4 5 // stack++
+       sw 5 1 stack // save n to mem
+       add 5 4 5 // stack++
+       sw 5 2 stack // save r to mem
+       add 5 4 5 // stack++
+       lw 0 4 neg1 // load -1
+       add 1 4 1 // n - 1
+       jalr 6 7 // goto combi reg[7] = pc + 1
+       lw 0 4 neg1 // load -1
+       add 5 4 5 // stack--
+       lw 5 2 stack // load r 
+       add 5 4 5 // stack--
+       lw 5 1 stack // load n
+       add 1 4 1 // n - 1
+       add 2 4 2 // r - 1
+       jalr 6 7 // goto combi reg[7] = pc + 1
+       lw 0 4 neg1 // load -1
+       add 5 4 5 // stack--
+       lw 5 7 stack // load mem[stack->address + reg[5]]
+       jalr 7 4 // goto value reg[7]
+done   lw 0 4 pos1 // load 1
+       add 3 4 3 // result++
+       jalr 7 4 // goto value reg[7]
+pos1   .fill 1
+neg1   .fill -1
+nin    .fill 4
+rin    .fill 3
+comAdr .fill combi
+stack  .fill 0
